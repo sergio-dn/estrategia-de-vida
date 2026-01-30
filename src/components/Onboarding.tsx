@@ -89,7 +89,7 @@ export default function Onboarding() {
                                                         <span className="text-sm font-bold text-slate-700 cursor-help peer">
                                                             {u.name}
                                                         </span>
-                                                        <span className="text-[10px] text-slate-500 truncate max-w-[120px]">{u.description}</span>
+
 
                                                         {/* Tooltip */}
                                                         <div className="absolute left-0 bottom-full mb-2 w-64 p-3 bg-white border border-slate-200 shadow-xl rounded-xl z-50 opacity-0 invisible peer-hover:opacity-100 peer-hover:visible transition-all pointer-events-none">
