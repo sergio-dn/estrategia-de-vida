@@ -84,10 +84,22 @@ export default function Onboarding() {
                                         {areaUnits.map(u => {
                                             const state = units.find(val => val.unitId === u.id)!;
                                             return (
-                                                <div key={u.id} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-colors">
+                                                <div key={u.id} className="group relative flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-colors">
                                                     <div className="flex flex-col">
-                                                        <span className="text-sm font-bold text-slate-700">{u.name}</span>
+                                                        <span className="text-sm font-bold text-slate-700 cursor-help peer">
+                                                            {u.name}
+                                                        </span>
                                                         <span className="text-[10px] text-slate-500 truncate max-w-[120px]">{u.description}</span>
+
+                                                        {/* Tooltip */}
+                                                        <div className="absolute left-0 bottom-full mb-2 w-64 p-3 bg-white border border-slate-200 shadow-xl rounded-xl z-50 opacity-0 invisible peer-hover:opacity-100 peer-hover:visible transition-all pointer-events-none">
+                                                            <p className="text-xs font-bold text-indigo-600 mb-1">Metodología:</p>
+                                                            <p className="text-[10px] text-slate-600 mb-2 leading-relaxed">{u.methodologyNote}</p>
+                                                            <p className="text-xs font-bold text-indigo-600 mb-1">Ejemplos:</p>
+                                                            <ul className="list-disc list-inside text-[10px] text-slate-500">
+                                                                {u.examples.map((ex, i) => <li key={i}>{ex}</li>)}
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                     <div className="flex items-center gap-2">
                                                         <input
