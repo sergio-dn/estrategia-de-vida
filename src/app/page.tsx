@@ -82,7 +82,7 @@ export default function Home() {
               Libres: {remainingHours.toFixed(1)}h
             </span>
           </div>
-          <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+          <div className="flex-1 overflow-y-auto p-4 pt-10 custom-scrollbar">
             {LIFE_AREAS.map((area) => {
               const areaUnits = LIFE_UNITS.filter(u => u.areaId === area.id);
               return (
@@ -103,13 +103,23 @@ export default function Home() {
                                 {u.name}
                               </span>
                               {/* Tooltip */}
-                              <div className="absolute left-0 bottom-full mb-2 w-64 p-3 bg-white border border-slate-200 shadow-xl rounded-xl z-50 opacity-0 invisible peer-hover:opacity-100 peer-hover:visible transition-all pointer-events-none">
-                                <p className="text-xs font-bold text-indigo-600 mb-1">Metodología:</p>
-                                <p className="text-[10px] text-slate-600 mb-2 leading-relaxed">{u.methodologyNote}</p>
-                                <p className="text-xs font-bold text-indigo-600 mb-1">Ejemplos:</p>
-                                <ul className="list-disc list-inside text-[10px] text-slate-500">
-                                  {u.examples.map((ex, i) => <li key={i}>{ex}</li>)}
-                                </ul>
+                              <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-3 w-72 sm:w-80 p-4 bg-white border border-slate-200 shadow-2xl rounded-2xl z-[100] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none origin-bottom scale-95 group-hover:scale-100 backdrop-blur-sm bg-white/95">
+                                <div className="relative">
+                                  <p className="text-[10px] font-black uppercase tracking-widest text-indigo-500 mb-2">Metodología Rainer Strack</p>
+                                  <p className="text-xs text-slate-700 mb-3 leading-relaxed font-medium">{u.methodologyNote}</p>
+                                  <div className="h-px bg-slate-100 mb-3" />
+                                  <p className="text-[10px] font-black uppercase tracking-widest text-indigo-500 mb-2">Ejemplos Clave</p>
+                                  <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+                                    {u.examples.map((ex, i) => (
+                                      <div key={i} className="flex items-start gap-1">
+                                        <div className="w-1 h-1 rounded-full bg-indigo-400 mt-1.5 shrink-0" />
+                                        <span className="text-[10px] text-slate-500 leading-tight">{ex}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                  {/* Triangle pointer */}
+                                  <div className="absolute -bottom-[21px] left-1/2 -translate-x-1/2 border-8 border-transparent border-t-white drop-shadow-sm" />
+                                </div>
                               </div>
                             </div>
 
