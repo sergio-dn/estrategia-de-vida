@@ -1,26 +1,151 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0c;
+  --foreground: #f0f0f5;
+  --primary: #6366f1;
+  --primary-glow: rgba(99, 102, 241, 0.3);
+  --secondary: #ec4899;
+  --accent: #10b981;
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-dim: #94a3b8;
+
+  --area-1: #6366f1;
+  --area-2: #10b981;
+  --area-3: #f59e0b;
+  --area-4: #3b82f6;
+  --area-5: #ec4899;
+  --area-6: #8b5cf6;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Custom component classes */
+.glass-card {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.premium-gradient-text {
+  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px var(--primary-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px var(--primary-glow);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 10px;
+}
+
+/* Tailwind custom utilities */
+@utility text-text-dim {
+  color: var(--text-dim);
+}
+
+@utility text-primary {
+  color: var(--primary);
+}
+
+@utility text-secondary {
+  color: var(--secondary);
+}
+
+@utility text-accent {
+  color: var(--accent);
+}
+
+@utility border-l-accent {
+  border-left-color: var(--accent);
+}
+
+@utility border-l-secondary {
+  border-left-color: var(--secondary);
+}
+
+@utility border-accent {
+  border-color: var(--accent);
+}
+
+@utility border-secondary-50 {
+  border-color: rgba(236, 72, 153, 0.5);
+}
+
+/* Touch-friendly sliders for mobile */
+@media (pointer: coarse) {
+  input[type="range"] {
+    height: 8px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    width: 28px;
+    height: 28px;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+  }
 }
