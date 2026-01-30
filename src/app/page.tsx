@@ -11,6 +11,9 @@ import { Settings, Heart, Zap, Target, Users, Coffee, Info, AlertTriangle, Rotat
 export default function Home() {
   const { units, updateUnit, totalHours, remainingHours, isOnboardingComplete, userVision, resetAll } = useLife();
 
+  const [hoveredUnitId, setHoveredUnitId] = React.useState<string | null>(null);
+  const hoveredUnit = LIFE_UNITS.find(u => u.id === hoveredUnitId);
+
   if (!isOnboardingComplete) {
     return <Onboarding />;
   }
@@ -82,7 +85,7 @@ export default function Home() {
               Libres: {remainingHours.toFixed(1)}h
             </span>
           </div>
-          <div className="flex-1 overflow-y-auto p-4 pt-10 custom-scrollbar">
+          <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
             {LIFE_AREAS.map((area) => {
               const areaUnits = LIFE_UNITS.filter(u => u.areaId === area.id);
               return (
@@ -96,31 +99,17 @@ export default function Home() {
                     {areaUnits.map((u) => {
                       const state = units.find(val => val.unitId === u.id)!;
                       return (
-                        <div key={u.id} className="group relative">
+                        <div
+                          key={u.id}
+                          className="group relative"
+                          onMouseEnter={() => setHoveredUnitId(u.id)}
+                          onMouseLeave={() => setHoveredUnitId(null)}
+                        >
                           <div className="flex justify-between items-center mb-1">
                             <div className="flex items-center gap-2">
-                              <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors cursor-help peer">
+                              <span className={`text-sm font-semibold transition-colors ${hoveredUnitId === u.id ? 'text-primary' : 'text-foreground'}`}>
                                 {u.name}
                               </span>
-                              {/* Tooltip */}
-                              <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-3 w-72 sm:w-80 p-4 bg-white border border-slate-200 shadow-2xl rounded-2xl z-[100] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none origin-bottom scale-95 group-hover:scale-100 backdrop-blur-sm bg-white/95">
-                                <div className="relative">
-                                  <p className="text-[10px] font-black uppercase tracking-widest text-indigo-500 mb-2">Metodología Rainer Strack</p>
-                                  <p className="text-xs text-slate-700 mb-3 leading-relaxed font-medium">{u.methodologyNote}</p>
-                                  <div className="h-px bg-slate-100 mb-3" />
-                                  <p className="text-[10px] font-black uppercase tracking-widest text-indigo-500 mb-2">Ejemplos Clave</p>
-                                  <div className="grid grid-cols-2 gap-x-2 gap-y-1">
-                                    {u.examples.map((ex, i) => (
-                                      <div key={i} className="flex items-start gap-1">
-                                        <div className="w-1 h-1 rounded-full bg-indigo-400 mt-1.5 shrink-0" />
-                                        <span className="text-[10px] text-slate-500 leading-tight">{ex}</span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                  {/* Triangle pointer */}
-                                  <div className="absolute -bottom-[21px] left-1/2 -translate-x-1/2 border-8 border-transparent border-t-white drop-shadow-sm" />
-                                </div>
-                              </div>
                             </div>
 
                             <div className="flex items-center gap-2">
@@ -147,7 +136,7 @@ export default function Home() {
                                 step="1"
                                 value={state.satisfaction}
                                 onChange={(e) => updateUnit(u.id, { satisfaction: parseInt(e.target.value) })}
-                                className="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                                className="w-full h-1 bg-white/50 rounded-lg appearance-none cursor-pointer accent-emerald-400"
                               />
                             </div>
                             <div className="flex-1 flex items-center gap-2">
@@ -159,7 +148,7 @@ export default function Home() {
                                 step="1"
                                 value={state.importance}
                                 onChange={(e) => updateUnit(u.id, { importance: parseInt(e.target.value) })}
-                                className="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-pink-500"
+                                className="w-full h-1 bg-white/50 rounded-lg appearance-none cursor-pointer accent-pink-400"
                               />
                             </div>
                           </div>
@@ -170,6 +159,28 @@ export default function Home() {
                 </div>
               );
             })}
+          </div>
+
+          {/* Sidebar Explorer Panel */}
+          <div className={`p-4 border-t border-white/5 transition-all duration-300 ${hoveredUnit ? 'bg-primary/5 min-h-[160px]' : 'bg-transparent min-h-[60px]'}`}>
+            {hoveredUnit ? (
+              <div className="animate-fade-in">
+                <p className="text-[9px] font-black uppercase tracking-widest text-primary/60 mb-1">Metodología Rainer Strack</p>
+                <h4 className="text-sm font-bold mb-1">{hoveredUnit.name}</h4>
+                <p className="text-[11px] text-text-dim leading-relaxed mb-2">{hoveredUnit.methodologyNote}</p>
+                <div className="flex flex-wrap gap-1">
+                  {hoveredUnit.examples.slice(0, 3).map((ex, i) => (
+                    <span key={i} className="text-[9px] px-2 py-0.5 rounded-full bg-white/5 border border-white/5 text-text-dim">
+                      {ex}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="h-full flex items-center justify-center opacity-30">
+                <p className="text-[10px] italic">Pasa el ratón para ver la importancia estratégica</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
