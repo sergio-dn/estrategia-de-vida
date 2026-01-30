@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0c;
-  --foreground: #f0f0f5;
-  --primary: #6366f1;
-  --primary-glow: rgba(99, 102, 241, 0.3);
-  --secondary: #ec4899;
-  --accent: #10b981;
-  --card-bg: rgba(255, 255, 255, 0.03);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --glass: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --text-dim: #94a3b8;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --primary: #4f46e5;
+  --primary-glow: rgba(79, 70, 229, 0.1);
+  --secondary: #db2777;
+  --accent: #059669;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --glass: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --text-dim: #64748b;
 
   --area-1: #6366f1;
   --area-2: #10b981;
@@ -20,6 +20,7 @@
   --area-5: #ec4899;
   --area-6: #8b5cf6;
 }
+
 
 * {
   box-sizing: border-box;
@@ -38,16 +39,16 @@ body {
 
 /* Custom component classes */
 .glass-card {
-  background: var(--glass);
+  background: var(--card-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--card-border);
   border-radius: 20px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
 }
 
 .premium-gradient-text {
-  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -81,6 +82,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

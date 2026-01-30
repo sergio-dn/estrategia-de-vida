@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useLife } from '@/context/LifeContext';
-import { LIFE_UNITS } from '@/lib/constants';
+import { LIFE_UNITS, LIFE_AREAS } from '@/lib/constants';
 import MatrixChart from '@/components/MatrixChart';
 import InsightsPanel from '@/components/InsightsPanel';
 import Onboarding from '@/components/Onboarding';
@@ -78,66 +78,84 @@ export default function Home() {
         <div className="glass-card flex flex-col overflow-hidden">
           <div className="p-4 border-b border-white/5 flex justify-between items-center">
             <h2 className="text-sm font-bold uppercase tracking-widest text-text-dim">Simulador de Cartera</h2>
-            <span className="text-xs font-mono text-text-dim">
-              Restantes: {remainingHours.toFixed(1)}h
+            <span className={`text-xs font-mono font-bold ${remainingHours >= 0 ? 'text-emerald-500' : 'text-pink-500'}`}>
+              Libres: {remainingHours.toFixed(1)}h
             </span>
           </div>
           <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
-            {LIFE_UNITS.map((u) => {
-              const state = units.find(val => val.unitId === u.id)!;
-              const maxHours = state.hours + remainingHours;
+            {LIFE_AREAS.map((area) => {
+              const areaUnits = LIFE_UNITS.filter(u => u.areaId === area.id);
               return (
-                <div key={u.id} className="mb-6 group">
-                  <div className="flex justify-between items-center mb-2">
-                    <div className="flex items-center gap-2">
-                      <div className="p-1.5 rounded-lg bg-white/5 text-text-dim group-hover:text-white transition-colors">
-                        {getIcon(u.areaId)}
-                      </div>
-                      <span className="text-sm font-semibold">{u.name}</span>
-                    </div>
-                    <span className="text-xs font-mono text-text-dim">{state.hours.toFixed(1)}h</span>
-                  </div>
+                <div key={area.id} className="mb-8 last:mb-0">
+                  <h3 className="text-xs font-black uppercase tracking-widest mb-4 flex items-center gap-2" style={{ color: area.color }}>
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: area.color }} />
+                    {area.name}
+                  </h3>
 
-                  {/* Hours Slider */}
-                  <input
-                    type="range"
-                    min="0"
-                    max={maxHours}
-                    step="0.5"
-                    value={state.hours}
-                    onChange={(e) => updateUnit(u.id, { hours: parseFloat(e.target.value) })}
-                    aria-label={`Horas para ${u.name}`}
-                    className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-indigo-500 mb-4"
-                  />
+                  <div className="space-y-4">
+                    {areaUnits.map((u) => {
+                      const state = units.find(val => val.unitId === u.id)!;
+                      return (
+                        <div key={u.id} className="group relative">
+                          <div className="flex justify-between items-center mb-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors cursor-help peer">
+                                {u.name}
+                              </span>
+                              {/* Tooltip */}
+                              <div className="absolute left-0 bottom-full mb-2 w-64 p-3 bg-white border border-slate-200 shadow-xl rounded-xl z-50 opacity-0 invisible peer-hover:opacity-100 peer-hover:visible transition-all pointer-events-none">
+                                <p className="text-xs font-bold text-indigo-600 mb-1">Metodología:</p>
+                                <p className="text-[10px] text-slate-600 mb-2 leading-relaxed">{u.methodologyNote}</p>
+                                <p className="text-xs font-bold text-indigo-600 mb-1">Ejemplos:</p>
+                                <ul className="list-disc list-inside text-[10px] text-slate-500">
+                                  {u.examples.map((ex, i) => <li key={i}>{ex}</li>)}
+                                </ul>
+                              </div>
+                            </div>
 
-                  {/* Imp & Sat Mini Row */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex flex-col">
-                      <span className="text-[10px] uppercase text-text-dim mb-1">Satisfacción ({state.satisfaction})</span>
-                      <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        step="1"
-                        value={state.satisfaction}
-                        onChange={(e) => updateUnit(u.id, { satisfaction: parseInt(e.target.value) })}
-                        aria-label={`Satisfacción de ${u.name}`}
-                        className="w-full h-1 bg-white/5 rounded-lg appearance-none cursor-pointer accent-emerald-500"
-                      />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[10px] uppercase text-text-dim mb-1">Importancia ({state.importance})</span>
-                      <input
-                        type="range"
-                        min="0"
-                        max="10"
-                        step="1"
-                        value={state.importance}
-                        onChange={(e) => updateUnit(u.id, { importance: parseInt(e.target.value) })}
-                        aria-label={`Importancia de ${u.name}`}
-                        className="w-full h-1 bg-white/5 rounded-lg appearance-none cursor-pointer accent-pink-500"
-                      />
-                    </div>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="number"
+                                min="0"
+                                max={state.hours + remainingHours}
+                                step="0.5"
+                                value={state.hours}
+                                onChange={(e) => updateUnit(u.id, { hours: parseFloat(e.target.value) || 0 })}
+                                className="w-16 h-8 text-xs font-mono font-bold text-center bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                              />
+                              <span className="text-[10px] font-bold text-slate-400 uppercase">hrs</span>
+                            </div>
+                          </div>
+
+                          <div className="flex gap-4">
+                            <div className="flex-1 flex items-center gap-2">
+                              <span className="text-[9px] uppercase font-bold text-slate-400 shrink-0 w-8">Sat</span>
+                              <input
+                                type="range"
+                                min="0"
+                                max="10"
+                                step="1"
+                                value={state.satisfaction}
+                                onChange={(e) => updateUnit(u.id, { satisfaction: parseInt(e.target.value) })}
+                                className="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                              />
+                            </div>
+                            <div className="flex-1 flex items-center gap-2">
+                              <span className="text-[9px] uppercase font-bold text-slate-400 shrink-0 w-8">Imp</span>
+                              <input
+                                type="range"
+                                min="0"
+                                max="10"
+                                step="1"
+                                value={state.importance}
+                                onChange={(e) => updateUnit(u.id, { importance: parseInt(e.target.value) })}
+                                className="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-pink-500"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               );
@@ -145,6 +163,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+
 
       <InsightsPanel />
 
