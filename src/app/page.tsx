@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useLife } from '@/context/LifeContext';
-import { LIFE_UNITS, LIFE_AREAS } from '@/lib/constants';
+import { LIFE_UNITS } from '@/lib/constants';
 import MatrixChart from '@/components/MatrixChart';
 import InsightsPanel from '@/components/InsightsPanel';
 import Onboarding from '@/components/Onboarding';

@@ -3,7 +3,7 @@
 import React from 'react';
 import { useLife } from '@/context/LifeContext';
 import { LIFE_UNITS } from '@/lib/constants';
-import { AlertCircle, TrendingDown, Star, Zap } from 'lucide-react';
+import { AlertCircle, TrendingDown, Star } from 'lucide-react';
 
 export default function InsightsPanel() {
     const { units } = useLife();
@@ -54,12 +54,12 @@ export default function InsightsPanel() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 {insights.map((insight, i) => (
                     <div key={i} className={`glass-card p-3 sm:p-4 flex gap-3 sm:gap-4 items-start border-l-4 ${insight.type === 'urgency' ? 'border-l-red-500' :
-                            insight.type === 'distraction' ? 'border-l-pink-500' :
-                                'border-l-emerald-500'
+                        insight.type === 'distraction' ? 'border-l-pink-500' :
+                            'border-l-emerald-500'
                         }`}>
                         <div className={`p-2 rounded-lg bg-white/5 shrink-0 ${insight.type === 'urgency' ? 'text-red-400' :
-                                insight.type === 'distraction' ? 'text-pink-400' :
-                                    'text-emerald-400'
+                            insight.type === 'distraction' ? 'text-pink-400' :
+                                'text-emerald-400'
                             }`}>
                             {insight.type === 'urgency' && <AlertCircle size={20} />}
                             {insight.type === 'distraction' && <TrendingDown size={20} />}

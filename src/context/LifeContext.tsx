@@ -42,6 +42,7 @@ export function LifeProvider({ children }: { children: React.ReactNode }) {
 
     // Load from localStorage only after mounting to avoid hydration mismatch
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsMounted(true);
         const savedData = localStorage.getItem('strategize_life_data');
         if (savedData) {
